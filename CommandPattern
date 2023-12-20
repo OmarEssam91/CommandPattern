@@ -1,0 +1,120 @@
+interface Command {
+    void execute();
+}
+
+// Receiver classes
+class Light {
+    void turnOn() {
+        System.out.println("Light is on");
+    }
+
+    void turnOff() {
+        System.out.println("Light is off");
+    }
+}
+
+class Fan {
+    void start() {
+        System.out.println("Fan is started");
+    }
+
+    void stop() {
+        System.out.println("Fan is stopped");
+    }
+}
+
+// Concrete Command classes
+class LightOnCommand implements Command {
+    private Light light;
+
+    public LightOnCommand(Light light) {
+        this.light = light;
+    }
+
+    @Override
+    public void execute() {
+        light.turnOn();
+    }
+}
+
+class LightOffCommand implements Command {
+    private Light light;
+
+    public LightOffCommand(Light light) {
+        this.light = light;
+    }
+
+    @Override
+    public void execute() {
+        light.turnOff();
+    }
+}
+
+class FanStartCommand implements Command {
+    private Fan fan;
+
+    public FanStartCommand(Fan fan) {
+        this.fan = fan;
+    }
+
+    @Override
+    public void execute() {
+        fan.start();
+    }
+}
+
+class FanStopCommand implements Command {
+    private Fan fan;
+
+    public FanStopCommand(Fan fan) {
+        this.fan = fan;
+    }
+
+    @Override
+    public void execute() {
+        fan.stop();
+    }
+}
+
+// Invoker class
+class RemoteControl {
+    private Command command;
+
+    public void setCommand(Command command) {
+        this.command = command;
+    }
+
+    public void pressButton() {
+        command.execute();
+    }
+}
+
+public class CommandExample {
+    public static void main(String[] args) {
+        // Create receiver objects
+        Light livingRoomLight = new Light();
+        Fan ceilingFan = new Fan();
+
+        // Create concrete command objects
+        Command lightOn = new LightOnCommand(livingRoomLight);
+        Command lightOff = new LightOffCommand(livingRoomLight);
+        Command fanStart = new FanStartCommand(ceilingFan);
+        Command fanStop = new FanStopCommand(ceilingFan);
+
+        // Create an invoker (remote control)
+        RemoteControl remote = new RemoteControl();
+
+        // Set and press different buttons
+        remote.setCommand(lightOn);
+        remote.pressButton();
+
+        remote.setCommand(fanStart);
+        remote.pressButton();
+
+        remote.setCommand(lightOff);
+        remote.pressButton();
+
+        remote.setCommand(fanStop);
+        remote.pressButton();
+    }
+}
